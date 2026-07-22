@@ -37,10 +37,14 @@ setuptools.setup(name="corelight-client",
         },
 
     install_requires=[
-        # 2.17.{1,2} have a problem with urrllib3:
+        # 2.17.{1,2} have a problem with urllib3:
         # https://github.com/requests/requests/issues/4104
-        # Pinning requests to <2.30.0 to avoid compatibility issues with urllib3 2.0.0 and above
-        "requests>=2.9.1,!=2.17.1,!=2.17.2,<2.30.0",
+        # The client subclasses urllib3 transport internals (see the adapters in
+        # client/session.py); requests 2.32 reworked HTTPAdapter connection
+        # handling, so those overrides were updated to work across urllib3 1.x
+        # and 2.x. No upper bound: the client is tested against current requests
+        # (2.33+/urllib3 2.x).
+        "requests>=2.9.1,!=2.17.1,!=2.17.2",
     ],
 
     classifiers=[
